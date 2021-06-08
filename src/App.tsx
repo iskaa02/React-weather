@@ -1,0 +1,26 @@
+import axios from "axios";
+import * as React from "react";
+import styled from "styled-components";
+import CitySelect, { cityList } from "./Components/CitySelect";
+import DashBoard from "./Components/DashBoard/DashBoard";
+import SideBar from "./Components/SideBar/SideBar";
+import { WeatherApi } from "./logic";
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  background-color: #e2e2e2;
+`;
+
+const App = () => {
+  return (
+    <Wrapper>
+      <SideBar />
+      <DashBoard />
+    </Wrapper>
+  );
+};
+
+export default App;
