@@ -3,6 +3,9 @@ import * as Constants from "../../constants/constatns";
 import { VscLocation } from "react-icons/vsc";
 import Chart from "./chart";
 import SunriseIcon from "./Sunrise";
+import { isPropertySignature } from "typescript";
+import store, { RootState } from "../../Redux/store";
+import { useSelector } from "react-redux";
 
 const Card = styled.div`
   border-radius: 15px;
@@ -12,9 +15,11 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #fff;
+  background-color: ${(props: any) => props.theme.secondaryColor};
+
   span {
-    color: ${Constants.textSecondary};
+    color: ${(props: any) => props.theme.textSecondary};
+    font-weight: ${Constants.FW.bold};
     align-self: flex-start;
     font-size: 1.1rem;
     margin-top: 5px;
@@ -22,6 +27,7 @@ const Card = styled.div`
   h2 {
     margin: 10px 0;
     font-size: 3rem;
+    color: ${(props: any) => props.theme.textSecondary};
     font-family: ${Constants.fontFamily};
     font-weight: ${Constants.FW.regular};
     i {
@@ -34,27 +40,42 @@ const Card = styled.div`
   }
   h3 {
     font-size: 1.3rem;
+    color: ${(props: any) => props.theme.textSecondary};
     font-weight: ${Constants.FW.regular};
   }
 `;
 
-export const WindStatus = () => {
+export const WindStatus = ({ Wind, windDeg }: any) => {
+  const theme = useSelector((state: RootState) => state.reducer.theme);
+
   return (
-    <Card>
+    <Card theme={theme}>
       <span>Wind status</span>
       <h2>
-        7.71<i>km/h</i>
+        {Wind}
+        <i>km/h</i>
       </h2>
       <span>
-        <VscLocation size={25} style={{ transform: "rotate(65deg)" }} />
+        <VscLocation size={25} style={{ transform: `rotate(${windDeg}deg)` }} />
       </span>
     </Card>
   );
 };
 
-export const Sunrise = () => {
+type sunsetAndRise = {
+  sunrise: number;
+  sunset: number;
+};
+
+export const Sunrise = (props: sunsetAndRise) => {
+  const theme = useSelector((state: RootState) => state.reducer.theme);
+
+  const sunrise = new Date(props.sunrise * 1000);
+  const sunset = new Date(props.sunset * 1000);
+
+  console.log(new Date(1623122684 * 1000).getMinutes());
   return (
-    <Card>
+    <Card theme={theme}>
       <span>Sunrise & Sunset</span>
       <div
         style={{
@@ -65,7 +86,9 @@ export const Sunrise = () => {
         }}
       >
         <SunriseIcon down={false} />
-        <h3 style={{ marginLeft: 20 }}>6:00</h3>
+        <h3
+          style={{ marginLeft: 20 }}
+        >{`${sunrise.getHours()}:${sunrise.getMinutes()}`}</h3>
       </div>
       <div
         style={{
@@ -76,17 +99,21 @@ export const Sunrise = () => {
         }}
       >
         <SunriseIcon down={true} />
-        <h3 style={{ marginLeft: 20 }}>19:00</h3>
+        <h3
+          style={{ marginLeft: 20 }}
+        >{`${sunset.getHours()}:${sunset.getMinutes()}`}</h3>
       </div>
     </Card>
   );
 };
 
-export const UV = () => {
+export const UV = ({ UV }: any) => {
+  const theme = useSelector((state: RootState) => state.reducer.theme);
+
   return (
-    <Card style={{ alignItems: "center" }}>
+    <Card style={{ alignItems: "center" }} theme={theme}>
       <span style={{ margin: 0 }}>UV Index</span>
-      <Chart UV={3} size={170} />
+      <Chart UV={UV} size={170} />
       <span
         style={{
           justifySelf: "center",
@@ -95,41 +122,52 @@ export const UV = () => {
           top: "-70px",
           fontSize: "1.7rem",
           marginBottom: "-50px",
-          color: "#000",
+          color: theme.textSecondary,
           fontWeight: 700,
         }}
       >
-        3
+        {Math.floor(UV)}
       </span>
     </Card>
   );
 };
+export const Humidity = ({ humidity }: any) => {
+  const theme = useSelector((state: RootState) => state.reducer.theme);
 
-export const Humidity = () => {
   return (
-    <Card>
+    <Card theme={theme}>
       <span>Humidity</span>
       <h2>
-        7.71<sup>%</sup>
+        {humidity}
+        <sup>%</sup>
       </h2>
     </Card>
   );
 };
 
-export const Visibility = () => {
+export const Visibility = ({ visibility }: any) => {
+  const theme = useSelector((state: RootState) => state.reducer.theme);
+
   return (
-    <Card>
+    <Card theme={theme}>
       <span>Visibility</span>
       <h2>
-        7.71<i>km</i>
+        {(visibility * 10 ** -3).toFixed(1)}
+        <i>km</i>
       </h2>
     </Card>
   );
 };
 
-export const AirPressure = () => (
-  <Card>
-    <span>Air Pressure</span>
-    <h2>7.71</h2>
-  </Card>
-);
+export const AirPressure = ({ pressure }: any) => {
+  const theme = useSelector((state: RootState) => state.reducer.theme);
+
+  return (
+    <Card theme={theme}>
+      <span>Air Pressure</span>
+      <h2>
+        {pressure} <i>hPa</i>
+      </h2>
+    </Card>
+  );
+};

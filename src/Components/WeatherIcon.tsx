@@ -17,7 +17,8 @@ export const animatedIcon = (description: string, isDay: boolean) => {
   switch (description) {
     case "few clouds":
     case "scattered clouds":
-    case "broken clouds": {
+    case "broken clouds":
+    case "clouds": {
       if (isDay) {
         return AnimatedCloudyDay;
       } else {

@@ -2,6 +2,9 @@ import * as React from "react";
 import { IoMdSearch } from "react-icons/io";
 import * as Constants from "../constants/constatns";
 import styled from "styled-components";
+import store, { RootState } from "../Redux/store";
+import { useSelector } from "react-redux";
+console.log("this");
 
 export type cityList = {
   list: [];
@@ -55,6 +58,7 @@ const CityDiv = styled.div`
 
     li {
       display: flex;
+
       width: 300px;
       padding: 5px 10px;
       align-items: center;
@@ -72,14 +76,15 @@ const CityDiv = styled.div`
   }
 `;
 const CitySelect = (props: props) => {
-  console.log(props.cityList.list);
+  const theme = useSelector((state: RootState) => state.reducer.theme);
+
   return (
     <CityDiv>
       <div className={"searchbar"}>
         <IoMdSearch
           className={"searchIcon"}
           size={20}
-          color={Constants.textSecondary}
+          color={theme.textSecondary}
         />
         <input
           value={props.idSearch}

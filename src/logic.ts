@@ -20,12 +20,15 @@ export const WeatherApi = {
     uvi: 0,
     visibility: 0,
     wind_speed: 0,
-    weather: {
-      id: 0,
-      main: 0,
-      description: "",
-      icon: "",
-    },
+    wind_deg: 0,
+    weather: [
+      {
+        id: 0,
+        main: "",
+        description: "",
+        icon: "",
+      },
+    ],
   },
   hourly: [
     {
@@ -95,53 +98,6 @@ export const WeatherApi = {
   ],
 };
 
-export const formatCity = (searchbarInput: string) => {
-  //formatting the search string to be used in api
-  let search: any = searchbarInput;
-  if (search !== "") {
-    search = search.split(" ");
-    let searchArray = [];
-    for (let i = 0; i < search.length; i++) {
-      searchArray.push(search[i]);
-      if (i !== search.length - 1) {
-        searchArray.push("%20");
-      }
-    }
-  }
-
-  //using the formatted search term in the url
-  const apiSearch = `https://openweathermap.org/data/2.5/find?callback=jQuery19106513848554651638_1621278502697&q=${search.join(
-    " "
-  )}&type=lie&srt=population&cnt=30&appid=439d4b804bc8187953eb36d2a8c26a02&_=1621278502698`;
-
-  return apiSearch;
-};
-const dispatch = useDispatch;
-
-export const fetchCity = (apiSearch: any) => async (dispatch: any) => {
-  // axios
-  //   .get(apiSearch)
-  //   .then((res) => JSON.parse(res.data.split("(")[1].split(")")[0]))
-  //   .then((res) => {
-  //     let autoCompleteResult = [];
-  //     for (let i = 0; i < res.list.slice(0, 4).length; i++) {
-  //       autoCompleteResult.push({
-  //         //we store the city name, longitude, latitude and the country
-  //         name: res.list[i].name,
-  //         country: res.list[i].sys.country,
-  //         lon: res.list[i].coord.lon,
-  //         lat: res.list[i].coord.lat,
-  //       });
-  //     }
-  //     dispatch(
-  //       apiCalls.actions.searchRes({
-  //         list: autoCompleteResult,
-  //         count: res.count,
-  //       })
-  //     );
-  //   });
-};
-
 type list = {
   name: string;
   country: string;
@@ -149,14 +105,19 @@ type list = {
   lat: any;
 };
 
-export const fetchWeatherData = () => async (dispatch: any) => {
+export const fetchWeatherData = (location: list) => async (dispatch: any) => {
   axios
     .get(
-      "https://api.openweathermap.org/data/2.5/weather?id=89055&appid=7c429de32f4265da2ae7500c84b55058"
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${location.lat}&lon=${location.lon}&exclude=minutely&units=metric&appid=${process.env.REACT_APP_WEATHER_API}`
     )
     .then(
       (res) => {
-        dispatch(apiCalls.actions.LOAD_DATA_SUCCESS(res.data));
+        const data = {
+          data: res.data,
+          country: location.country,
+          city: location.name,
+        };
+        dispatch(apiCalls.actions.LOAD_DATA_SUCCESS(data));
       },
       (err) => {
         dispatch(apiCalls.actions.LOAD_DATA_SUCCESS({ name: "", country: "" }));

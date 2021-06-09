@@ -4,12 +4,13 @@ import { IoMdSearch } from "react-icons/io";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import * as Constants from "../../constants/constatns";
-import { fetchCity, fetchWeatherData, formatCity } from "../../logic";
+import { fetchWeatherData } from "../../logic";
+import store, { RootState } from "../../Redux/store";
 
 const SearchBarDiv = styled.div`
   display: flex;
   width: 100%;
-  background-color: ${Constants.mainColorLight};
+  background-color: ${(props: any) => props.theme.mainColor};
   justify-content: space-between;
   border-radius: 10px;
   margin-bottom: 10px;
@@ -17,7 +18,8 @@ const SearchBarDiv = styled.div`
   padding: 10px;
   input {
     border: none;
-    background-color: ${Constants.mainColorLight};
+    background-color: ${(props: any) => props.theme.mainColor};
+    color: ${(props: any) => props.theme.textSecondary};
 
     margin-left: 5px;
     outline: none;
@@ -25,11 +27,11 @@ const SearchBarDiv = styled.div`
     font-weight: ${Constants.FW.bold};
   }
   button {
-    color: ${Constants.textSecondary};
+    color: ${(props: any) => props.theme.textSecondary};
     cursor: pointer;
 
     border: none;
-    background-color: ${Constants.mainColorLight};
+    background-color: ${(props: any) => props.theme.mainColor};
     div {
       width: 30px;
       height: 30px;
@@ -41,7 +43,7 @@ const SearchBarDiv = styled.div`
   }
   button:hover {
     div {
-      background-color: #bdbdbd;
+      background-color: ${(props: any) => props.theme.grayColor};
     }
   }
 `;
@@ -61,19 +63,19 @@ const SearchResults = styled.div`
     border-radius: 0 0 10px 10px;
 
     position: absolute;
-    background-color: ${Constants.mainColorLight};
+    background-color: ${(props: any) => props.theme.mainColor};
 
     list-style: none;
     li {
       padding: 8px 20px;
       cursor: pointer;
-      color: ${Constants.textSecondary};
+      color: ${(props: any) => props.theme.textSecondary};
     }
     li:last-child {
       border-radius: 0 0 10px 10px;
     }
     li:hover {
-      background-color: #bdbdbd;
+      background-color: ${(props: any) => props.theme.grayColor};
     }
   }
 `;
@@ -87,7 +89,9 @@ const SearchBar = () => {
   const inputText = React.useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const [city, setCity] = React.useState(CityData);
-  const [showRes, setShowRes] = React.useState(false);
+  const [showRes, setShowRes] = React.useState(true);
+  const theme = useSelector((state: RootState) => state.reducer.theme);
+  console.log();
 
   const search = (apiSearch: any) => {
     axios
@@ -95,8 +99,7 @@ const SearchBar = () => {
         method: "GET",
         params: { namePrefix: `${apiSearch}`, limit: "4" },
         headers: {
-          "x-rapidapi-key":
-            "6ee64c281fmsh03f1b131dc76d4ap1aa9aejsn7aee16834f1d",
+          "x-rapidapi-key": process.env.REACT_APP_LOCATION_API,
         },
       })
       .then((val) => {
@@ -104,6 +107,7 @@ const SearchBar = () => {
         setCity({ data: data.data, metadata: data.metadata });
       });
   };
+  console.log(city);
   return (
     <div
       style={{
@@ -113,7 +117,7 @@ const SearchBar = () => {
         boxShadow: "0 7px 30px -10px rgba(150, 170, 180, 0.5)",
       }}
     >
-      <SearchBarDiv>
+      <SearchBarDiv theme={theme}>
         <button>
           <div className={"button"}>
             <IoMdSearch
@@ -121,6 +125,7 @@ const SearchBar = () => {
               size={22}
               onClick={() => {
                 inputText.current !== null && search(inputText.current.value);
+                setShowRes(true);
               }}
             />
           </div>
@@ -129,27 +134,30 @@ const SearchBar = () => {
           type="text"
           ref={inputText}
           placeholder={"search for places..."}
-          onFocus={() => {
-            setShowRes(true);
-          }}
-          onBlur={() => {
-            setShowRes(false);
-          }}
         />
       </SearchBarDiv>
-      <SearchResults>
+      <SearchResults theme={theme}>
         <ul>
           {showRes &&
             city.metadata.totalCount !== 0 &&
-            city.data.map((item: any) => (
-              <li
-                onClick={() => {
-                  setCity(CityData);
-                }}
-              >
-                {item.name},{item.region}, {item.country}
-              </li>
-            ))}
+            city.data.map((item: any) => {
+              const list = {
+                name: item.name,
+                lat: item.latitude,
+                lon: item.longitude,
+                country: item.country,
+              };
+              return (
+                <li
+                  onClick={() => {
+                    setCity(CityData);
+                    dispatch(fetchWeatherData(list));
+                  }}
+                >
+                  {item.name},{item.region}, {item.country}
+                </li>
+              );
+            })}
         </ul>
       </SearchResults>
     </div>

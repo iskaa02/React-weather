@@ -1,12 +1,11 @@
 import * as React from "react";
-import styled from "styled-components";
-import SearchBar from "./SearchBar";
-import { animatedIcon } from "../WeatherIcon";
 import { AiOutlineCloud } from "react-icons/ai";
-import * as Constants from "../../constants/constatns";
-import { WeatherApi } from "../../logic";
 import { useSelector } from "react-redux";
-import { RootState } from "../../Redux/store";
+import styled from "styled-components";
+import * as Constants from "../../constants/constatns";
+import store, { RootState } from "../../Redux/store";
+import { animatedIcon } from "../WeatherIcon";
+import SearchBar from "./SearchBar";
 
 const SideBarDiv = styled.div`
   display: flex;
@@ -14,28 +13,31 @@ const SideBarDiv = styled.div`
   top: 0;
   flex: 1;
   flex-direction: column;
-  background-color: ${Constants.SecondaryColorLight};
+  background-color: ${(props: any) => props.theme.secondaryColor};
   padding: 40px 20px;
 
   .icon {
     width: 100%;
     height: 40%;
-    margin-bottom: 20px;
+    margin-top: 10px;
   }
 
   h1 {
     font-size: 4rem;
     font-weight: ${Constants.FW.regular};
+    color: ${(props: any) => props.theme.textSecondary};
+
     margin: 0px;
   }
   h2 {
     margin-top: 10px;
     font-family: ${Constants.fontFamily};
+    color: ${(props: any) => props.theme.textSecondary};
     font-weight: ${Constants.FW.regular};
     margin-bottom: 20px;
   }
   .separator {
-    color: ${Constants.textSecondary};
+    color: ${(props: any) => props.theme.textSecondary};
     width: 80%;
     align-self: center;
     margin: 30px 0;
@@ -45,8 +47,8 @@ const SideBarDiv = styled.div`
     align-items: center;
     padding: 0 15px;
     h3 {
-      font-weight: ${Constants.FW.light};
-      color: ${Constants.textSecondary};
+      font-weight: ${Constants.FW.regular};
+      color: ${(props: any) => props.theme.textSecondary};
       font-size: 0.9rem;
       margin-left: 10px;
     }
@@ -57,6 +59,7 @@ const SideBarDiv = styled.div`
     border-radius: 10px;
     color: white;
     align-self: center;
+    font-weight: ${Constants.FW.light};
     position: relative;
     top: 10px;
     justify-self: center;
@@ -68,36 +71,54 @@ const SideBarDiv = styled.div`
     }
   }
 `;
+const daysOfWeek = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+];
 
 const SideBar = () => {
-  const WeatherIcon = animatedIcon("rainy", true);
   const weatherData = useSelector((state: RootState) => state.reducer.data);
+  const locationData = useSelector((state: RootState) => state.reducer.search);
+  const WeatherIcon = animatedIcon(
+    weatherData.current.weather[0].main.toLowerCase(),
+    true
+  );
+  const theme = useSelector((state: RootState) => state.reducer.theme);
+
+  const date = new Date();
   return (
-    <SideBarDiv>
+    <SideBarDiv theme={theme}>
       <SearchBar />
       <div
         className={"icon"}
         style={{
-          background: `url(${WeatherIcon})`,
+          backgroundImage: `url(${WeatherIcon})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       ></div>
       <h1>
-        {weatherData.current.temp}
+        {Math.round(weatherData.current.temp)}
         <sup>°C</sup>
       </h1>
       <h2>
-        Monday <span>16:00</span>
+        {daysOfWeek[date.getDay()]}
+        <span> {`${date.getHours()}: ${date.getMinutes()}`}</span>
       </h2>
       <hr className={"separator"} />
       <div className={"container"}>
-        <AiOutlineCloud size={28} style={{ color: Constants.textSecondary }} />
-        <h3>{weatherData.current.weather.description}</h3>
+        <AiOutlineCloud size={28} style={{ color: theme.textSecondary }} />
+        <h3>{weatherData.current.weather[0].description}</h3>
       </div>
       <div className={"city"}>
-        <span>Al Bayda, Libya</span>
+        <span>
+          {locationData.selected.name},{locationData.selected.country}
+        </span>
       </div>
     </SideBarDiv>
   );

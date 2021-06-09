@@ -1,10 +1,9 @@
-import axios from "axios";
 import * as React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-import CitySelect, { cityList } from "./Components/CitySelect";
 import DashBoard from "./Components/DashBoard/DashBoard";
 import SideBar from "./Components/SideBar/SideBar";
-import { WeatherApi } from "./logic";
+import { RootState } from "./Redux/store";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -15,6 +14,8 @@ const Wrapper = styled.div`
 `;
 
 const App = () => {
+  const theme = useSelector((state: RootState) => state.reducer.theme);
+
   return (
     <Wrapper>
       <SideBar />

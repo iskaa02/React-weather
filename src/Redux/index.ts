@@ -1,18 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchWeatherData, fetchCity, WeatherApi } from "../logic";
+import { WeatherApi } from "../logic";
+import { dark, light } from "../constants/constatns";
+
 // Define a type for the slice state
 const searchRes = {
   count: 0,
   list: [{}],
+  selected: { lon: 0, lat: 0, name: "Search your city", country: "" },
 };
 
 interface globalState {
   active: boolean;
   data: typeof WeatherApi;
   search: typeof searchRes;
+  theme: typeof light;
   // {
   //   list: [{ lon: number; lat: number; name: string; country: string }];
-  //   selected: { lon: number; lat: number; name: string; country: string };
   // };
 }
 
@@ -21,6 +24,7 @@ const initialState: globalState = {
   active: false,
   data: WeatherApi,
   search: searchRes,
+  theme: light,
 
   // {
 
@@ -34,15 +38,20 @@ export const apiCalls = createSlice({
   initialState,
   reducers: {
     LOAD_DATA_SUCCESS: (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.data;
+      state.active = true;
+      state.search.selected.name = action.payload.city;
+      state.search.selected.country = action.payload.country;
     },
-    searchRes: (state, action) => {
-      state.search = action.payload;
+    THEME_TOGGLE: (state) => {
+      state.theme.theme === "light"
+        ? (state.theme = dark)
+        : (state.theme = light);
     },
   },
 });
 
-export const { LOAD_DATA_SUCCESS } = apiCalls.actions;
+export const { LOAD_DATA_SUCCESS, THEME_TOGGLE } = apiCalls.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 
