@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { WeatherApi } from "../logic";
-import { dark, light } from "../constants/constatns";
+import { dark, light } from "../constants/constants";
 
 // Define a type for the slice state
 const searchRes = {
@@ -14,6 +14,9 @@ interface globalState {
   data: typeof WeatherApi;
   search: typeof searchRes;
   theme: typeof light;
+  config: {
+    metricUnits: boolean;
+  };
   // {
   //   list: [{ lon: number; lat: number; name: string; country: string }];
   // };
@@ -25,7 +28,9 @@ const initialState: globalState = {
   data: WeatherApi,
   search: searchRes,
   theme: light,
-
+  config: {
+    metricUnits: false,
+  },
   // {
 
   // list: [{ lon: 0, lat: 0, name: "", country: "" }],
@@ -48,10 +53,14 @@ export const apiCalls = createSlice({
         ? (state.theme = dark)
         : (state.theme = light);
     },
+    UNIT_TOGGLE: (state, action) => {
+      state.config.metricUnits = action.payload;
+    },
   },
 });
 
-export const { LOAD_DATA_SUCCESS, THEME_TOGGLE } = apiCalls.actions;
+export const { LOAD_DATA_SUCCESS, THEME_TOGGLE, UNIT_TOGGLE } =
+  apiCalls.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 

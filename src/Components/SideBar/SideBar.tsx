@@ -2,23 +2,24 @@ import * as React from "react";
 import { AiOutlineCloud } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import * as Constants from "../../constants/constatns";
-import store, { RootState } from "../../Redux/store";
+import * as Constants from "../../constants/constants";
+import { toFahrenheit } from "../../logic";
+import { RootState } from "../../Redux/store";
 import { animatedIcon } from "../WeatherIcon";
 import SearchBar from "./SearchBar";
 
 const SideBarDiv = styled.div`
   display: flex;
-  position: sticky;
-  top: 0;
-  flex: 1;
+  width: 30vw;
+  max-width: 300px;
   flex-direction: column;
   background-color: ${(props: any) => props.theme.secondaryColor};
   padding: 40px 20px;
+  
 
   .icon {
     width: 100%;
-    height: 40%;
+    height: 250px;
     margin-top: 10px;
   }
 
@@ -60,14 +61,41 @@ const SideBarDiv = styled.div`
     color: white;
     align-self: center;
     font-weight: ${Constants.FW.light};
-    position: relative;
-    top: 10px;
-    justify-self: center;
+    margin-top: auto;
+
     background-color: coral;
     span {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       align-text: center;
-      white-space: nowrap;
+    }
+  }
+  ${Constants.mediaQueries.tablet} {
+    padding: 20px 10px;
+    .city {
+      padding: 10px 20px;
+    }
+    ${Constants.mediaQueries.tabletS} {
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      max-width: 650px;
+      .icon {
+        width: 70%;
+
+        margin-top: 10px;
+      }
+      .city {
+        color: white;
+        align-self: center;
+        margin-top:20px;
+        font-weight: ${Constants.FW.light};
+        
+    
+        background-color: coral;
+        span {
+          font-size: 1.5rem;
+          align-text: center;
+        }
     }
   }
 `;
@@ -88,6 +116,9 @@ const SideBar = () => {
     true
   );
   const theme = useSelector((state: RootState) => state.reducer.theme);
+  const metricUnit = useSelector(
+    (state: RootState) => state.reducer.config.metricUnits
+  );
 
   const date = new Date();
   return (
@@ -103,8 +134,10 @@ const SideBar = () => {
         }}
       ></div>
       <h1>
-        {Math.round(weatherData.current.temp)}
-        <sup>°C</sup>
+        {metricUnit
+          ? Math.round(weatherData.current.temp)
+          : Math.round(toFahrenheit(weatherData.current.temp))}
+        <sup>{metricUnit ? "°C" : "°F"}</sup>
       </h1>
       <h2>
         {daysOfWeek[date.getDay()]}

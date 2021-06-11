@@ -124,3 +124,8 @@ export const fetchWeatherData = (location: list) => async (dispatch: any) => {
       }
     );
 };
+
+export const toFahrenheit = (C: number) => {
+  const F = (C * 9) / 5 + 32;
+  return F;
+};

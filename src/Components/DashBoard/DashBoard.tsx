@@ -1,11 +1,9 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import * as Constants from "../../constants/constatns";
-import { WeatherApi } from "../../logic";
-import store, { RootState } from "../../Redux/store";
+import * as Constants from "../../constants/constants";
+import { RootState } from "../../Redux/store";
 import TopBar from "../TopBar";
-import Chart from "./chart";
 import ExtraWeather from "./ExtraWeather";
 import WeatherCards from "./WeatherCards";
 const DashBoardDiv = styled.div`
@@ -33,6 +31,16 @@ const DashBoardDiv = styled.div`
 
   flex-direction: column;
   background-color: ${(props: any) => props.theme.mainColor};
+  ${Constants.mediaQueries.tablet} {
+    padding: 0 70px 20px 70px;
+  }
+  ${Constants.mediaQueries.tabletS} {
+    overflow-y: hidden;
+    padding: 0 40px 20px 40px;
+  }
+  ${Constants.mediaQueries.mobileS} {
+    padding: 20px;
+  }
 `;
 const DashBoard = () => {
   const theme = useSelector((state: RootState) => state.reducer.theme);

@@ -3,7 +3,7 @@ import * as React from "react";
 import { IoMdSearch } from "react-icons/io";
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import * as Constants from "../../constants/constatns";
+import * as Constants from "../../constants/constants";
 import { fetchWeatherData } from "../../logic";
 import store, { RootState } from "../../Redux/store";
 
@@ -114,7 +114,6 @@ const SearchBar = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        boxShadow: "0 7px 30px -10px rgba(150, 170, 180, 0.5)",
       }}
     >
       <SearchBarDiv theme={theme}>
