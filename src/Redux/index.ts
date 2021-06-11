@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { WeatherApi } from "../logic";
+import { createSlice } from "@reduxjs/toolkit";
 import { dark, light } from "../constants/constants";
+import { WeatherApi } from "../logic";
 
 // Define a type for the slice state
 const searchRes = {
@@ -61,7 +61,5 @@ export const apiCalls = createSlice({
 
 export const { LOAD_DATA_SUCCESS, THEME_TOGGLE, UNIT_TOGGLE } =
   apiCalls.actions;
-
-// Other code such as selectors can use the imported `RootState` type
 
 export default apiCalls.reducer;

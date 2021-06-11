@@ -1,11 +1,11 @@
 import axios from "axios";
 import * as React from "react";
 import { IoMdSearch } from "react-icons/io";
-import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import * as Constants from "../../constants/constants";
 import { fetchWeatherData } from "../../logic";
-import store, { RootState } from "../../Redux/store";
+import { RootState } from "../../Redux/store";
 
 const SearchBarDiv = styled.div`
   display: flex;

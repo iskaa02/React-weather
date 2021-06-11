@@ -1,6 +1,5 @@
 //
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import { apiCalls } from "./Redux";
 
 export const WeatherApi = {

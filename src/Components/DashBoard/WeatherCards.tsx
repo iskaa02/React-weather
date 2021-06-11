@@ -1,13 +1,12 @@
 import { motion, useAnimation } from "framer-motion";
 import * as React from "react";
 import { AiOutlineMinus } from "react-icons/ai";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import * as Constants from "../../constants/constants";
-import { apiCalls } from "../../Redux";
+import { toFahrenheit } from "../../logic";
 import { RootState } from "../../Redux/store";
 import { staticIcon } from "../WeatherIcon";
-import { toFahrenheit } from "../../logic";
 
 const CardDiv = styled(motion.div)`
   width: 100px;
@@ -35,7 +34,6 @@ const CardDiv = styled(motion.div)`
     margin: 0;
   }
 `;
-type card = {};
 
 const Card = ({ data, delay, type, weekIsActive, key1 }: any) => {
   const metricUnit = useSelector(
@@ -74,7 +72,7 @@ const Card = ({ data, delay, type, weekIsActive, key1 }: any) => {
       x: 0,
       transition: { delay: delay, type: "spring", duration: 1 },
     }));
-  }, [weekIsActive]);
+  }, [weekIsActive, delay, controls]);
 
   return (
     <CardDiv theme={theme} animate={controls}>

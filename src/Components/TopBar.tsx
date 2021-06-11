@@ -1,4 +1,4 @@
-import { motion, useAnimation } from "framer-motion";
+import { motion } from "framer-motion";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -54,9 +54,7 @@ const TopBarDiv = styled.div`
 const TopBar = () => {
   const dispatch = useDispatch();
   const theme = useSelector((state: RootState) => state.reducer.theme);
-  const themeMode = useSelector(
-    (state: RootState) => state.reducer.theme.theme
-  );
+
   const metricUnit = useSelector(
     (state: RootState) => state.reducer.config.metricUnits
   );
