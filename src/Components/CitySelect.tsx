@@ -13,8 +13,6 @@ export type cityList = {
   lat: string;
 };
 
-
-
 const CityDiv = styled.div`
   width: 100vw;
   height: 100vh;
