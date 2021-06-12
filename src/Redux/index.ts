@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { dark, light } from "../constants/constants";
-import { WeatherApi } from "../logic";
+import { WeatherApi } from "../SharedLogic";
 
 // Define a type for the slice state
 const searchRes = {
@@ -17,9 +17,6 @@ interface globalState {
   config: {
     metricUnits: boolean;
   };
-  // {
-  //   list: [{ lon: number; lat: number; name: string; country: string }];
-  // };
 }
 
 // Define the initial state using that type
@@ -31,11 +28,6 @@ const initialState: globalState = {
   config: {
     metricUnits: false,
   },
-  // {
-
-  // list: [{ lon: 0, lat: 0, name: "", country: "" }],
-  // selected: { lon: 0, lat: 0, name: "", country: "" },
-  // },
 };
 export const apiCalls = createSlice({
   name: "counter",

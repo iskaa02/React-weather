@@ -4,7 +4,7 @@ import { IoMdSearch } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import * as Constants from "../../constants/constants";
-import { fetchWeatherData } from "../../logic";
+import { fetchWeatherData } from "../../SharedLogic";
 import { RootState } from "../../Redux/store";
 
 const SearchBarDiv = styled.div`
@@ -86,13 +86,15 @@ const CityData = {
   },
 };
 const SearchBar = () => {
-  const inputText = React.useRef<HTMLInputElement>(null);
-  const dispatch = useDispatch();
+  // i use a local state to render the city search
   const [city, setCity] = React.useState(CityData);
   const [showRes, setShowRes] = React.useState(true);
+  // using ref to send search data to the api
+  const inputText = React.useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
+  //checking which theme is being used
   const theme = useSelector((state: RootState) => state.reducer.theme);
-  console.log();
-
+  //function that take a city name as parameter and set the search data as local state
   const search = (apiSearch: any) => {
     axios
       .get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities", {
@@ -107,7 +109,6 @@ const SearchBar = () => {
         setCity({ data: data.data, metadata: data.metadata });
       });
   };
-  console.log(city);
   return (
     <div
       style={{
@@ -137,6 +138,7 @@ const SearchBar = () => {
       </SearchBarDiv>
       <SearchResults theme={theme}>
         <ul>
+          {/* mapping the search result to a li  */}
           {showRes &&
             city.metadata.totalCount !== 0 &&
             city.data.map((item: any) => {

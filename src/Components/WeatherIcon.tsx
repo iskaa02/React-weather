@@ -12,7 +12,8 @@ import AnimatedSnowy from "../SVGs/animated/snowy.svg";
 import Snowy from "../SVGs/static/snowy.svg";
 import Thunder from "../SVGs/static/thunder.svg";
 import AnimatedThunder from "../SVGs/animated/thunder.svg";
-
+//there's 2 different weather icons i have in here one is animated and the other is static
+//i made function that return the url of the icon then i use it in div as a background image
 export const animatedIcon = (description: string, isDay: boolean) => {
   switch (description) {
     case "few clouds":

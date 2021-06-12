@@ -1,7 +1,7 @@
 //
 import axios from "axios";
 import { apiCalls } from "./Redux";
-
+//this object is what the api will return
 export const WeatherApi = {
   lat: 0,
   lon: 0,

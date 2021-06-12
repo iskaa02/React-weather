@@ -3,7 +3,7 @@ import { AiOutlineCloud } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import * as Constants from "../../constants/constants";
-import { toFahrenheit } from "../../logic";
+import { toFahrenheit } from "../../SharedLogic";
 import { RootState } from "../../Redux/store";
 import { animatedIcon } from "../WeatherIcon";
 import SearchBar from "./SearchBar";

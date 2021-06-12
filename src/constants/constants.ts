@@ -1,3 +1,4 @@
+//Light and dark theme
 export const dark = {
   theme: "dark",
   mainColor: "#282c2d",
@@ -15,9 +16,13 @@ export const light = {
 
 export const buttonGradient =
   "background: linear-gradient(92.03deg, #A66B6B 0.97%, #2E264D 99.33%);";
+
+//font weights
 export const FW = { light: "300", regular: "400", bold: "700", bolder: "800" };
+// font family
 export const fontFamily = "'Gilroy','san-serif'";
 
+//media queries
 export const mediaQueries = {
   tablet: "@media (max-width: 800px)",
   tabletS: "@media (max-width: 570px)",

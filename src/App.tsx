@@ -3,6 +3,9 @@ import styled from "styled-components";
 import DashBoard from "./Components/DashBoard/DashBoard";
 import * as Constants from "./constants/constants";
 import SideBar from "./Components/SideBar/SideBar";
+import { useSelector } from "react-redux";
+import { RootState } from "./Redux/store";
+import CitySelect from "./Components/CitySelect";
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -18,12 +21,17 @@ const Wrapper = styled.div`
 `;
 
 const App = () => {
-  return (
-    <Wrapper>
-      <SideBar />
-      <DashBoard />
-    </Wrapper>
-  );
+  const selectedCity = useSelector((state: RootState) => state.reducer.active);
+  if (selectedCity) {
+    return (
+      <Wrapper>
+        <SideBar />
+        <DashBoard />
+      </Wrapper>
+    );
+  } else {
+    return <CitySelect />;
+  }
 };
 
 export default App;
