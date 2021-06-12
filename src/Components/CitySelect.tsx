@@ -19,7 +19,7 @@ const CityDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${(props: any) => props.theme.grayColor};
+  background-color: ${(props: any) => props.theme.secondaryColor};
 `;
 const CitySelect = () => {
   const theme = useSelector((state: RootState) => state.reducer.theme);
