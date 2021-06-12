@@ -28,7 +28,7 @@ finally run `$ yarn start` to run the project locally
 
 ## live demo
 
-[React weather app](https://60c3b3e4f29a7f000805be5e--eager-banach-752141.netlify.app/)
+[React weather app](https://eager-banach-752141.netlify.app/)
 
 ## Bugs 
 **some issues with location api** <br/>
