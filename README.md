@@ -20,8 +20,7 @@ clone this repo `git clone https://github.com/iskaa02/react-weather-app-2.0.0`
 run
 `$ yarn` to install all the dependencies
 get api keys from both the api used (both are free)
-[Weather Api](openweathermap.org/api)
-[Location Api](rapidapi.com/wirefreethought/api/geodb-cities)<br/>
+[Weather Api](openweathermap.org/api) and the [Location Api](rapidapi.com/wirefreethought/api/geodb-cities)<br/>
 then create .env file at the root directory of the project and put this inside of it
 `REACT_APP_WEATHER_API = your weather api key`
 `REACT_APP_LOCATION_API = your location api key`
