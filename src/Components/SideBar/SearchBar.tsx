@@ -80,10 +80,17 @@ const SearchResults = styled.div`
   }
 `;
 const CityData = {
-  data: [{}],
-  metadata: {
-    totalCount: 0,
-  },
+  data: [
+    {
+      name: "",
+      country: "",
+      coord: {
+        lon: 0,
+        lat: 0,
+      },
+    },
+  ],
+  totalCount: 0,
 };
 const SearchBar = () => {
   // i use a local state to render the city search
@@ -96,17 +103,23 @@ const SearchBar = () => {
   const theme = useSelector((state: RootState) => state.reducer.theme);
   //function that take a city name as parameter and set the search data as local state
   const search = (apiSearch: any) => {
+    // axios
+    //   .get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities", {
+    //     method: "GET",
+    //     params: { namePrefix: `${apiSearch}`, limit: "4" },
+    //     headers: {
+    //       "x-rapidapi-key": process.env.REACT_APP_LOCATION_API,
+    //     },
+    //   })
     axios
-      .get("https://wft-geo-db.p.rapidapi.com/v1/geo/cities", {
+      .get("https://mellow-luxurious-cotija.glitch.me/searchForCity", {
         method: "GET",
-        params: { namePrefix: `${apiSearch}`, limit: "4" },
-        headers: {
-          "x-rapidapi-key": process.env.REACT_APP_LOCATION_API,
-        },
+        params: { search: `${apiSearch}` },
       })
       .then((val) => {
         const data = val.data;
-        setCity({ data: data.data, metadata: data.metadata });
+        setCity({ data: data, totalCount: data.length });
+        console.log(city);
       });
   };
   return (
@@ -134,18 +147,21 @@ const SearchBar = () => {
           type="text"
           ref={inputText}
           placeholder={"search for places..."}
+          onChange={(e) => {
+            e.target.value.length !== 3 && search(e.target.value);
+          }}
         />
       </SearchBarDiv>
       <SearchResults theme={theme}>
         <ul>
           {/* mapping the search result to a li  */}
-          {showRes &&
-            city.metadata.totalCount !== 0 &&
+
+          {city.totalCount !== 0 &&
             city.data.map((item: any) => {
               const list = {
                 name: item.name,
-                lat: item.latitude,
-                lon: item.longitude,
+                lat: item.coord.lat,
+                lon: item.coord.lon,
                 country: item.country,
               };
               return (
@@ -155,7 +171,7 @@ const SearchBar = () => {
                     dispatch(fetchWeatherData(list));
                   }}
                 >
-                  {item.name},{item.region}, {item.country}
+                  {item.name}, {item.country}
                 </li>
               );
             })}
