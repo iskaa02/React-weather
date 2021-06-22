@@ -95,7 +95,6 @@ const CityData = {
 const SearchBar = () => {
   // i use a local state to render the city search
   const [city, setCity] = React.useState(CityData);
-  const [showRes, setShowRes] = React.useState(true);
   // using ref to send search data to the api
   const inputText = React.useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
