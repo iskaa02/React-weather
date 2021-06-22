@@ -118,7 +118,6 @@ const SearchBar = () => {
       .then((val) => {
         const data = val.data;
         setCity({ data: data, totalCount: data.length });
-        console.log(city);
       });
   };
   return (
@@ -137,7 +136,6 @@ const SearchBar = () => {
               size={22}
               onClick={() => {
                 inputText.current !== null && search(inputText.current.value);
-                setShowRes(true);
               }}
             />
           </div>
