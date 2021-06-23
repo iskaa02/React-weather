@@ -114,6 +114,7 @@ const SearchBar = () => {
       .get("https://mellow-luxurious-cotija.glitch.me/searchForCity", {
         method: "GET",
         params: { search: `${apiSearch}` },
+        headers: { 'Content-Type': 'application/json'},
       })
       .then((val) => {
         const data = val.data;
